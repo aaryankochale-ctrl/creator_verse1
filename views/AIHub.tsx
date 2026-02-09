@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { generateContentInsights, generateCaption } from '../services/gemini';
-import { AIInsight, UserRole } from '../types';
-import { MOCK_USER } from '../constants';
+import { AIInsight } from '../types';
+import { useAuth } from '../contexts/AuthContext';
 import { SparklesIcon, ArrowPathIcon, ClipboardIcon, ChartBarIcon } from '@heroicons/react/24/outline';
 
 const AIHub: React.FC = () => {
@@ -10,10 +9,11 @@ const AIHub: React.FC = () => {
   const [insights, setInsights] = useState<AIInsight[]>([]);
   const [topic, setTopic] = useState('');
   const [captionResult, setCaptionResult] = useState<{ title: string, caption: string, hashtags: string[] } | null>(null);
+  const { user } = useAuth();
 
   const fetchInsights = async () => {
     setLoading(true);
-    const results = await generateContentInsights(MOCK_USER.niche || 'General', 'YouTube');
+    const results = await generateContentInsights('General', 'YouTube');
     setInsights(results);
     setLoading(false);
   };

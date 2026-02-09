@@ -1,10 +1,13 @@
 
 import React, { useState } from 'react';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Layout from './components/Layout';
 import Dashboard from './views/Dashboard';
 import AIHub from './views/AIHub';
 import Marketplace from './views/Marketplace';
+import Login from './views/Login';
+import Signup from './views/Signup';
 
 // Empty component placeholders for other tabs
 const Placeholder: React.FC<{ name: string }> = ({ name }) => (
@@ -17,8 +20,10 @@ const Placeholder: React.FC<{ name: string }> = ({ name }) => (
   </div>
 );
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [authView, setAuthView] = useState<'login' | 'signup'>('login');
+  const { isAuthenticated } = useAuth();
 
   const renderContent = () => {
     switch (activeTab) {
@@ -37,14 +42,30 @@ const App: React.FC = () => {
     }
   };
 
+  if (!isAuthenticated) {
+    if (authView === 'login') {
+      return <Login onSwitchToSignup={() => setAuthView('signup')} />;
+    } else {
+      return <Signup onSwitchToLogin={() => setAuthView('login')} />;
+    }
+  }
+
   return (
-    <ThemeProvider>
-      <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
-        <div className="animate-in fade-in duration-500">
-          {renderContent()}
-        </div>
-      </Layout>
-    </ThemeProvider>
+    <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
+      <div className="animate-in fade-in duration-500">
+        {renderContent()}
+      </div>
+    </Layout>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <ThemeProvider>
+        <AppContent />
+      </ThemeProvider>
+    </AuthProvider>
   );
 };
 
