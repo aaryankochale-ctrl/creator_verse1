@@ -27,7 +27,7 @@ const Layout: React.FC<LayoutProps> = ({ activeTab, setActiveTab, children }) =>
           {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-full transition-colors"
+            className="p-2 bg-white dark:bg-black border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-full transition-colors"
             aria-label="Toggle theme"
           >
             {theme === 'dark' ? (
@@ -85,8 +85,8 @@ const Layout: React.FC<LayoutProps> = ({ activeTab, setActiveTab, children }) =>
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${isActive
-                    ? 'bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400'
-                    : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900'
+                  ? 'bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400'
+                  : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900'
                   }`}
               >
                 <Icon className="w-5 h-5" />
