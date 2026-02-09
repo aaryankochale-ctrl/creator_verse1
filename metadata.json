@@ -1,0 +1,9 @@
+
+{
+  "name": "AI Creator Hub",
+  "description": "A comprehensive mobile-first ecosystem connecting content creators, freelancers, and brands with AI-powered insights, matchmaking, and project management tools.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
