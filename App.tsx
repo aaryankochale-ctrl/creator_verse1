@@ -8,6 +8,7 @@ import GrowthDashboard from './views/GrowthDashboard';
 import Trending from './views/Trending';
 import AIHub from './views/AIHub';
 import Marketplace from './views/Marketplace';
+import Profile from './views/Profile';
 import Login from './views/Login';
 import Signup from './views/Signup';
 
@@ -42,7 +43,7 @@ const AppContent: React.FC = () => {
       case 'messages':
         return <Placeholder name="Messaging" />;
       case 'profile':
-        return <Placeholder name="User Profile" />;
+        return <Profile />;
       default:
         return <Dashboard />;
     }
