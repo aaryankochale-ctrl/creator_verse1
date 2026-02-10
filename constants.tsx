@@ -6,11 +6,13 @@ import {
   BriefcaseIcon,
   ChatBubbleLeftRightIcon,
   UserCircleIcon,
-  FireIcon
+  FireIcon,
+  ChartBarIcon
 } from '@heroicons/react/24/outline';
 
 export const NAV_ITEMS = [
   { id: 'dashboard', label: 'Home', icon: HomeIcon },
+  { id: 'growth', label: 'Growth', icon: ChartBarIcon },
   { id: 'trending', label: 'Trending', icon: FireIcon },
   { id: 'ai-hub', label: 'AI Hub', icon: SparklesIcon },
   { id: 'marketplace', label: 'Gigs', icon: BriefcaseIcon },

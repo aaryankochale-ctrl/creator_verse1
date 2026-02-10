@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Layout from './components/Layout';
 import Dashboard from './views/Dashboard';
+import GrowthDashboard from './views/GrowthDashboard';
 import Trending from './views/Trending';
 import AIHub from './views/AIHub';
 import Marketplace from './views/Marketplace';
@@ -30,6 +31,8 @@ const AppContent: React.FC = () => {
     switch (activeTab) {
       case 'dashboard':
         return <Dashboard />;
+      case 'growth':
+        return <GrowthDashboard />;
       case 'trending':
         return <Trending />;
       case 'ai-hub':
