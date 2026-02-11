@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 interface LoginProps {
     onSwitchToSignup: () => void;
     userType?: 'creator' | 'freelancer';
+    onBack?: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ onSwitchToSignup, userType = 'creator' }) => {
+const Login: React.FC<LoginProps> = ({ onSwitchToSignup, userType = 'creator', onBack }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -92,6 +94,17 @@ const Login: React.FC<LoginProps> = ({ onSwitchToSignup, userType = 'creator' })
             </div>
 
             <div className="max-w-md w-full space-y-8 relative z-10">
+                {/* Back Button */}
+                {onBack && (
+                    <button
+                        onClick={onBack}
+                        className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                    >
+                        <ArrowLeftIcon className="w-5 h-5" />
+                        <span className="text-sm font-medium">Change account type</span>
+                    </button>
+                )}
+
                 <div className="text-center">
                     <div className="mx-auto w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mb-4">
                         <span className="text-white font-bold text-2xl">H</span>

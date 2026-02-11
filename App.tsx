@@ -44,6 +44,12 @@ const AppContent: React.FC = () => {
     localStorage.setItem('selectedUserType', type);
   };
 
+  // Handle going back to user type selection
+  const handleBackToUserTypeSelection = () => {
+    setUserType(null);
+    localStorage.removeItem('selectedUserType');
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
@@ -73,9 +79,9 @@ const AppContent: React.FC = () => {
 
     // Show login or signup with selected user type
     if (authView === 'login') {
-      return <Login onSwitchToSignup={() => setAuthView('signup')} userType={userType} />;
+      return <Login onSwitchToSignup={() => setAuthView('signup')} userType={userType} onBack={handleBackToUserTypeSelection} />;
     } else {
-      return <Signup onSwitchToLogin={() => setAuthView('login')} userType={userType} />;
+      return <Signup onSwitchToLogin={() => setAuthView('login')} userType={userType} onBack={handleBackToUserTypeSelection} />;
     }
   }
 
