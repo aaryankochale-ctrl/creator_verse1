@@ -3,12 +3,13 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 interface User {
     username: string;
     email?: string;
+    userType?: 'creator' | 'freelancer';
 }
 
 interface AuthContextType {
     user: User | null;
     login: (username: string, password: string) => boolean;
-    signup: (username: string, password: string, email?: string) => boolean;
+    signup: (username: string, password: string, email?: string, userType?: 'creator' | 'freelancer') => boolean;
     logout: () => void;
     isAuthenticated: boolean;
 }
@@ -26,7 +27,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
     }, []);
 
-    const signup = (username: string, password: string, email?: string): boolean => {
+    const signup = (username: string, password: string, email?: string, userType?: 'creator' | 'freelancer'): boolean => {
         // Get existing users
         const users = JSON.parse(localStorage.getItem('users') || '[]');
 
@@ -36,12 +37,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
 
         // Create new user
-        const newUser = { username, password, email };
+        const newUser = { username, password, email, userType };
         users.push(newUser);
         localStorage.setItem('users', JSON.stringify(users));
 
         // Auto-login after signup
-        const userProfile = { username, email };
+        const userProfile = { username, email, userType };
         setUser(userProfile);
         localStorage.setItem('loggedInUser', JSON.stringify(userProfile));
 
@@ -56,7 +57,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const foundUser = users.find((u: any) => u.username === username && u.password === password);
 
         if (foundUser) {
-            const userProfile = { username: foundUser.username, email: foundUser.email };
+            const userProfile = { username: foundUser.username, email: foundUser.email, userType: foundUser.userType };
             setUser(userProfile);
             localStorage.setItem('loggedInUser', JSON.stringify(userProfile));
             return true;

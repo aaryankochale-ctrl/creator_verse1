@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Layout from './components/Layout';
@@ -11,6 +11,7 @@ import Marketplace from './views/Marketplace';
 import Profile from './views/Profile';
 import Login from './views/Login';
 import Signup from './views/Signup';
+import UserTypeSelection from './views/UserTypeSelection';
 
 // Empty component placeholders for other tabs
 const Placeholder: React.FC<{ name: string }> = ({ name }) => (
@@ -26,7 +27,22 @@ const Placeholder: React.FC<{ name: string }> = ({ name }) => (
 const AppContent: React.FC = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [authView, setAuthView] = useState<'login' | 'signup'>('login');
+  const [userType, setUserType] = useState<'creator' | 'freelancer' | null>(null);
   const { isAuthenticated } = useAuth();
+
+  // Check if user type has been selected before
+  useEffect(() => {
+    const storedUserType = localStorage.getItem('selectedUserType') as 'creator' | 'freelancer' | null;
+    if (storedUserType) {
+      setUserType(storedUserType);
+    }
+  }, []);
+
+  // Handle user type selection
+  const handleUserTypeSelection = (type: 'creator' | 'freelancer') => {
+    setUserType(type);
+    localStorage.setItem('selectedUserType', type);
+  };
 
   const renderContent = () => {
     switch (activeTab) {
@@ -50,10 +66,16 @@ const AppContent: React.FC = () => {
   };
 
   if (!isAuthenticated) {
+    // Show user type selection if not yet selected
+    if (!userType) {
+      return <UserTypeSelection onSelectType={handleUserTypeSelection} />;
+    }
+
+    // Show login or signup with selected user type
     if (authView === 'login') {
-      return <Login onSwitchToSignup={() => setAuthView('signup')} />;
+      return <Login onSwitchToSignup={() => setAuthView('signup')} userType={userType} />;
     } else {
-      return <Signup onSwitchToLogin={() => setAuthView('login')} />;
+      return <Signup onSwitchToLogin={() => setAuthView('login')} userType={userType} />;
     }
   }
 

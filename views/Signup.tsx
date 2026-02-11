@@ -4,9 +4,10 @@ import { useTheme } from '../contexts/ThemeContext';
 
 interface SignupProps {
     onSwitchToLogin: () => void;
+    userType?: 'creator' | 'freelancer';
 }
 
-const Signup: React.FC<SignupProps> = ({ onSwitchToLogin }) => {
+const Signup: React.FC<SignupProps> = ({ onSwitchToLogin, userType = 'creator' }) => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -40,7 +41,7 @@ const Signup: React.FC<SignupProps> = ({ onSwitchToLogin }) => {
             return;
         }
 
-        const success = signup(username, password, email);
+        const success = signup(username, password, email, userType);
         if (!success) {
             setError('Username already exists');
         }
@@ -113,8 +114,12 @@ const Signup: React.FC<SignupProps> = ({ onSwitchToLogin }) => {
                     <div className="mx-auto w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mb-4">
                         <span className="text-white font-bold text-2xl">H</span>
                     </div>
-                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Create Account</h2>
-                    <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">Join CreatorHub and start creating</p>
+                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+                        {userType === 'creator' ? 'Create Creator Account' : 'Create Freelancer Account'}
+                    </h2>
+                    <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                        Join CreatorHub as a {userType === 'creator' ? 'content creator' : 'freelancer'}
+                    </p>
                 </div>
 
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}>

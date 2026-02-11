@@ -1,33 +1,13 @@
-import React, { useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
+import { UserIcon, BriefcaseIcon } from '@heroicons/react/24/outline';
 
-interface LoginProps {
-    onSwitchToSignup: () => void;
-    userType?: 'creator' | 'freelancer';
+interface UserTypeSelectionProps {
+    onSelectType: (type: 'creator' | 'freelancer') => void;
 }
 
-const Login: React.FC<LoginProps> = ({ onSwitchToSignup, userType = 'creator' }) => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const { login } = useAuth();
+const UserTypeSelection: React.FC<UserTypeSelectionProps> = ({ onSelectType }) => {
     const { theme } = useTheme();
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        setError('');
-
-        if (!username || !password) {
-            setError('Please fill in all fields');
-            return;
-        }
-
-        const success = login(username, password);
-        if (!success) {
-            setError('Invalid username or password');
-        }
-    };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-black px-4 transition-colors relative overflow-hidden">
@@ -68,7 +48,6 @@ const Login: React.FC<LoginProps> = ({ onSwitchToSignup, userType = 'creator' })
                     </svg>
                 </div>
 
-                {/* Additional scattered logos for pattern */}
                 {/* Small YouTube - Right Middle */}
                 <div className="absolute top-1/3 right-24 opacity-40 dark:opacity-30 transform rotate-[-20deg]">
                     <svg className="w-12 h-12" viewBox="0 0 24 24">
@@ -91,79 +70,55 @@ const Login: React.FC<LoginProps> = ({ onSwitchToSignup, userType = 'creator' })
                 </div>
             </div>
 
-            <div className="max-w-md w-full space-y-8 relative z-10">
+            <div className="max-w-2xl w-full space-y-8 relative z-10">
                 <div className="text-center">
                     <div className="mx-auto w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mb-4">
                         <span className="text-white font-bold text-2xl">H</span>
                     </div>
-                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-                        {userType === 'creator' ? 'Creator Login' : 'Freelancer Login'}
-                    </h2>
-                    <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                        Sign in to your {userType === 'creator' ? 'creator' : 'freelancer'} account
-                    </p>
+                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Welcome to CreatorHub</h2>
+                    <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">Please select your account type to continue</p>
                 </div>
 
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                    <div className="space-y-4">
-                        <div>
-                            <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Username
-                            </label>
-                            <input
-                                id="username"
-                                name="username"
-                                type="text"
-                                required
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 placeholder-gray-400 text-gray-900 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
-                                placeholder="Enter your username"
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Password
-                            </label>
-                            <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                required
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 placeholder-gray-400 text-gray-900 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
-                                placeholder="Enter your password"
-                            />
-                        </div>
-                    </div>
-
-                    {error && (
-                        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-xl text-sm">
-                            {error}
-                        </div>
-                    )}
-
+                <div className="grid md:grid-cols-2 gap-6 mt-8">
+                    {/* Content Creator Option */}
                     <button
-                        type="submit"
-                        className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+                        onClick={() => onSelectType('creator')}
+                        className="group bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-800 hover:border-indigo-500 dark:hover:border-indigo-500 rounded-2xl p-8 transition-all hover:shadow-xl hover:scale-105 active:scale-100"
                     >
-                        Sign In
+                        <div className="flex flex-col items-center text-center space-y-4">
+                            <div className="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 rounded-2xl flex items-center justify-center group-hover:bg-indigo-500 transition-colors">
+                                <UserIcon className="w-8 h-8 text-indigo-600 dark:text-indigo-400 group-hover:text-white transition-colors" />
+                            </div>
+                            <div>
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Content Creator</h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    For YouTubers, influencers, and content makers looking to grow their audience
+                                </p>
+                            </div>
+                        </div>
                     </button>
 
-                    <div className="text-center">
-                        <button
-                            type="button"
-                            onClick={onSwitchToSignup}
-                            className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 font-medium"
-                        >
-                            Don't have an account? Sign up
-                        </button>
-                    </div>
-                </form>
+                    {/* Freelancer Option */}
+                    <button
+                        onClick={() => onSelectType('freelancer')}
+                        className="group bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-800 hover:border-emerald-500 dark:hover:border-emerald-500 rounded-2xl p-8 transition-all hover:shadow-xl hover:scale-105 active:scale-100"
+                    >
+                        <div className="flex flex-col items-center text-center space-y-4">
+                            <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-2xl flex items-center justify-center group-hover:bg-emerald-500 transition-colors">
+                                <BriefcaseIcon className="w-8 h-8 text-emerald-600 dark:text-emerald-400 group-hover:text-white transition-colors" />
+                            </div>
+                            <div>
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Freelancer</h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    For editors, designers, and professionals offering services to creators
+                                </p>
+                            </div>
+                        </div>
+                    </button>
+                </div>
             </div>
         </div>
     );
 };
 
-export default Login;
+export default UserTypeSelection;
